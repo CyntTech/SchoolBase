@@ -1,5 +1,8 @@
+import React, { useState } from 'react';
+import axios from 'axios'; // Import Axios for making HTTP requests
 import { ApplicantImg } from "../../../assets";
 import { Link } from "react-router-dom";
+import EmailVerification from '../EmailVerification';
 import {
   TextField,
   FormGroup,
@@ -7,7 +10,83 @@ import {
   Checkbox,
 } from "@mui/material";
 
+
 const ApplicantAcademiaInfo = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    passport: null, // For file upload
+    role: 'newApplicant',
+    firstName: '',
+    surName: '',
+    middleName: '',
+    gender: '',
+    password: '',
+    address: '',
+    phoneNumber: '',
+    dateOfBirth: '',
+    religion: '',
+    stateOfOrigin: '',
+    nationality: '',
+    maritalStatus: '',
+    parentName: '',
+    parentOccupation: '',
+    extracurricular: [],
+    interests: [],
+    skills: [],
+    previousSchools: [],
+    registeredCourses: [],
+    additionalDocuments: [],
+    signature: [],
+    recommendationLetter: [],
+
+  });
+
+  const [error, setError] = useState('');
+  const [emailVerificationModalOpen, setEmailVerificationModalOpen] = useState(false); // State for modal visibility
+  const [backendResponse, setBackendResponse] = useState(null); // State to store backend response
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    console.log(formData);
+  };
+
+
+  //function to handle submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Submit form data to backend
+      const response = await axios.post('https://tech4dev-project.onrender.com/students/upload', formData);
+      console.log('Response from backend:', response.data);
+      console.log('Signup successful:', response.data);
+      // Store backend response in state
+      setBackendResponse(response.data);
+      // Show email verification modal on successful form submission
+      setEmailVerificationModalOpen(true);
+
+    } catch (error) {
+      console.error('Error:', error);
+      setError('Error signing up. Please try again.');
+    }
+  };
+  //const handleSubmit = async (e) => {
+  //e.preventDefault();
+  //try {
+  //const formDataToSend = new FormData();
+  //for (const key in formData) {
+  //if (formData[key] instanceof Array) {
+  //formData[key].forEach((item) => formDataToSend.append(key, item));
+  //} else {
+  //formDataToSend.append(key, formData[key]);
+  //}
+  //}
+
+
+
+
+
   return (
     <div className="font-manrope bg-blueBg">
       <div className="text-center text-xl border-b-4 font-extrabold py-5">
@@ -20,10 +99,10 @@ const ApplicantAcademiaInfo = () => {
             width={100}
             height={50}
             src={ApplicantImg}
-            alt=""
+            alt="Applicant's image"
           />
         </div>
-        <form className="my-10 w-11/12">
+        <form className="my-10 w-11/12" onSubmit={handleSubmit}>
           <div className="">
             <p className="text-xs font-semibold mb-2 text-[#4D4D4E]">
               List of extracurricular (e.g; clubs, sports)
@@ -33,17 +112,20 @@ const ApplicantAcademiaInfo = () => {
               className="w-full text-xs bg-white rounded-md p-[12px] placeholder:text-base shadow-2xl outline-none"
               placeholder="List of extracurricular (e.g; clubs, sports)"
               size="small"
+              name="extracurricular"
+              value={formData.extracurricular}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
 
@@ -56,17 +138,20 @@ const ApplicantAcademiaInfo = () => {
               className="w-full bg-white rounded-md p-[12px] shadow-2xl outline-none"
               placeholder="Briefly state about your Interests/ goals or reason for applying"
               size="small"
+              name="interests"
+              value={formData.interests}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
 
@@ -79,17 +164,20 @@ const ApplicantAcademiaInfo = () => {
               className="w-full bg-white rounded-md p-[12px] shadow-2xl outline-none"
               placeholder="State your special skills/ talents"
               size="small"
+              name="skills"
+              value={formData.skills}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
           <div className="mt-4">
@@ -101,19 +189,27 @@ const ApplicantAcademiaInfo = () => {
               className="w-full bg-white rounded p-[12px] shadow-2xl outline-none"
               placeholder="Name of previous school attended"
               size="small"
+              name="previousSchools"
+              value={formData.previousSchools}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
+
+          {/* Error message display */}
+          {error && <div className="text-red-500">{error}</div>}
+
+
           <div className="mt-4">
             <p className="text-xs font-semibold mb-2 text-[#4D4D4E]">
               Upload additional document (e.g; supplementary materials)
@@ -124,17 +220,20 @@ const ApplicantAcademiaInfo = () => {
               placeholder=""
               type="file"
               size="small"
+              name="additionalDocuments"
+              value={formData.additionalDocuments}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
           <div className="mt-4">
@@ -147,17 +246,20 @@ const ApplicantAcademiaInfo = () => {
               placeholder=""
               type="file"
               size="small"
+              name="recommendationLetter"
+              value={formData.recommendationLetter}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
           <div className="mt-4">
@@ -170,17 +272,20 @@ const ApplicantAcademiaInfo = () => {
               placeholder=""
               type="file"
               size="small"
+              name="signature"
+              value={formData.signature}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
           <div className="mt-2">
@@ -201,14 +306,29 @@ const ApplicantAcademiaInfo = () => {
             </Link>
             <Link>
               <div className="">
-                <button className="border hover:bg-white hover:text-[#3D5EE1] bg-[#3D5EE1] text-white rounded-md h-10 w-36 cursor-pointer my-2">
-                  Continue
+                <button type="submit" className="border hover:bg-blue-300 hover:text-[#3D5EE1] bg-[#3D5EE1] text-white rounded-md h-10 w-36 cursor-pointer my-2">
+                  Submit
                 </button>
               </div>
             </Link>
           </div>
         </form>
-      </div>
+      </div >
+
+      {/* EmailVerification modal will only show when modalOpen is true */}
+      {emailVerificationModalOpen && (
+        console.log('Email verification modal open:', emailVerificationModalOpen),
+        <EmailVerification isOpen={emailVerificationModalOpen} onClose={() => setEmailVerificationModalOpen(false)} />
+      )}
+
+      {/* Display backend response */}
+      {backendResponse && (
+        console.log('Backend Response:', backendResponse),
+        <div className="mt-4">
+          <h2>Backend Response:</h2>
+          <pre>{JSON.stringify(backendResponse, null, 2)}</pre>
+        </div>
+      )}
     </div>
   );
 };

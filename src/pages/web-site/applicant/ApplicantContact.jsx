@@ -1,8 +1,46 @@
+import React, { useState } from 'react';
 import { ApplicantImg } from "../../../assets";
 import { TextField } from "@mui/material";
 import { Link } from "react-router-dom";
+//import ApplicantApiData from "./ApplicantApiData"
 
 const ApplicantContact = () => {
+  //<ApplicantApiData />
+  const [formData, setFormData] = useState({
+    email: '',
+    passport: null, // For file upload
+    role: 'newApplicant',
+    firstName: '',
+    surName: '',
+    middleName: '',
+    gender: '',
+    password: '',
+    address: '',
+    phoneNumber: '',
+    dateOfBirth: '',
+    religion: '',
+    stateOfOrigin: '',
+    nationality: '',
+    maritalStatus: '',
+    parentName: '',
+    parentOccupation: '',
+    extracurricular: [],
+    interests: [],
+    skills: [],
+    previousSchools: [],
+    registeredCourses: [],
+    additionalDocuments: [],
+    signature: [],
+    recommendationLetter: [],
+
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    console.log(formData);
+  };
+
   return (
     <div className="font-manrope bg-blueBg">
       <div className="text-center text-xl border-b-4 font-extrabold py-5">
@@ -28,17 +66,20 @@ const ApplicantContact = () => {
               className="w-full bg-white rounded-md p-[12px] placeholder:text-base shadow-2xl outline-none"
               placeholder="Parent/ Guardian name"
               size="small"
+              name="parentName"
+              value={formData.parentName}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
 
@@ -51,17 +92,20 @@ const ApplicantContact = () => {
               className="w-full bg-white rounded-md p-[12px] placeholder:text-base shadow-2xl outline-none"
               placeholder="Residential address"
               size="small"
+              name="address"
+              value={formData.address}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
 
@@ -70,19 +114,22 @@ const ApplicantContact = () => {
             {/* <input className='border px-2 text-xs h-14 my-1 shadow-md rounded p-[12px] w-11/12' type='name' placeholder='Surname' /> */}
             <TextField
               className="w-full bg-white rounded-md p-[12px] placeholder:text-base shadow-2xl outline-none"
-              placeholder="Status"
+              placeholder="maritalStatus"
               size="small"
+              name="maritalStatus"
+              value={formData.maritalStatus}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
           <div className="mt-2">
@@ -94,17 +141,20 @@ const ApplicantContact = () => {
               className="w-full bg-white rounded-md p-[12px] placeholder:text-base shadow-2xl outline-none"
               placeholder="Mobile Phone"
               size="small"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
 
@@ -117,17 +167,20 @@ const ApplicantContact = () => {
               className="w-full bg-white rounded-md p-[12px] placeholder:text-base shadow-2xl outline-none"
               placeholder="Email address"
               size="small"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
 
@@ -140,21 +193,24 @@ const ApplicantContact = () => {
               className="w-full bg-white rounded-md p-[12px] placeholder:text-base shadow-2xl outline-none"
               placeholder="State of Origin"
               size="small"
+              name="stateOfOrigin"
+              value={formData.stateOfOrigin}
+              onChange={handleInputChange}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-              //   value={firstname}
-              //   onChange={(e) => setFirstName(e.target.value)}
-              // onChange={formik.handleChange}
-              //   onBlur={formik.handleBlur}
-              // value={formik.values.firstName}
-              //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              //   helperText={formik.touched.firstName && formik.errors.firstName}
-              //   required
+            //   value={firstname}
+            //   onChange={(e) => setFirstName(e.target.value)}
+            // onChange={formik.handleChange}
+            //   onBlur={formik.handleBlur}
+            // value={formik.values.firstName}
+            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            //   helperText={formik.touched.firstName && formik.errors.firstName}
+            //   required
             />
           </div>
           <div className="flex mt-7 justify-between">
-            <Link to="/get-started/applicantregistration">
+            <Link to="/get-started/applicant/signup">
               <div className="">
                 <button className="border hover:bg-[#3D5EE1] hover:text-white bg-[white] text-[#3D5EE1] rounded-md h-10 w-36 cursor-pointer my-2">
                   Back

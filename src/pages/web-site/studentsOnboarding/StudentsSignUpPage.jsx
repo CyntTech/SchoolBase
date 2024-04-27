@@ -1,4 +1,4 @@
-import { Arrowdown, colleaguesDiscussing, imageicon } from "../../../assets";
+import { colleaguesDiscussing, imageicon } from "../../../assets";
 import "../../../styles/studentsOnboarding/signup.css";
 import { Link } from "react-router-dom";
 
@@ -51,7 +51,6 @@ const StudentsSignUp = () => {
               <label for="Date of Birth" className="label">Date of Birth</label>
               <br></br>
               <input id="Date of Birth" placeholder="Date of Birth" className="input" />
-              <img src={Arrowdown} className="arrowdown" />
             </div>
           </div>
           <br></br>
@@ -60,13 +59,11 @@ const StudentsSignUp = () => {
               <label for="State" className="label">State</label>
               <br></br>
               <input id="State" placeholder="State"  className="input"/>
-              <img src={Arrowdown} className="arrowdown" />
             </div>
             <div className="state">
               <label for="City" className="label">City</label>
               <br></br>
               <input id="City" placeholder="City" className="input"/>
-              <img src={Arrowdown} className="arrowdown" />
             </div>
           </div>
           <br></br>
@@ -77,9 +74,9 @@ const StudentsSignUp = () => {
               <input id="Password" placeholder="Password" className="input" />
             </div>
             <div>
-              <label for="Comfirm Password" className="label">Comfirm Password</label>
+              <label for="password" className="label">Comfirm Password</label>
               <br></br>
-              <input id="Comfirm Password" placeholder="Comfirm Password" className="input" />
+              <input id="password" placeholder="Comfirm Password" className="input" />
             </div>
           </div>
           <div className="last-sec">
