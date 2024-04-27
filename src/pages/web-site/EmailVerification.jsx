@@ -5,13 +5,14 @@ import { circle2 } from "../../assets";
 import { envelope } from "../../assets";
 import { Link } from "react-router-dom";
 
-const EmailVerification = () => {
+const EmailVerification = ({isOpen, onClose}) => {
   return (
-    <div className="bg-blueBg h-screen relative">
-      <div className="px-7 py-10 w-1/3">
+    <div className="w-full bg-blueBg h-screen absolute z-10">
+      <div className="w-full px-7 py-10 w-1/3 flex justify-between items-center">
         <h1 className="font-semibold font-itim text-[#474BCA] text-2xl tracking-wider lgss:ml-24">
           SchoolBase
         </h1>
+        <h1 className="text-red-600 cursor-pointer" onClick={()=>{onClose();}}>Close</h1>
       </div>
       <div className="">
         <img className="absolute top-40" src={semicircle} alt="" />

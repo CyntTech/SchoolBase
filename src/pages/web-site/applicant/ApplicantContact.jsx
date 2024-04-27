@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ApplicantImg } from "../../../assets";
 import { TextField } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -35,11 +35,24 @@ const ApplicantContact = () => {
 
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(formData);
+  useEffect(() => {
+    const storedData = localStorage.getItem('schoolbaseapplicantdata');
+    if (storedData) {
+      setFormData(JSON.parse(storedData));
+      console.log(JSON.parse(storedData));
+    }
+  }, []);
+
+  const handleInputChange = (key, value) => {
+    let data = {...formData};
+    data[key] = value;
+    setFormData(data);
   };
+
+  const handleContinue = () => {
+    localStorage.setItem("schoolbaseapplicantdata", JSON.stringify(formData));
+    window.location.href = "/get-started/applicantacademiainfo";
+  }
 
   return (
     <div className="font-manrope bg-blueBg">
@@ -56,7 +69,7 @@ const ApplicantContact = () => {
             alt=""
           />
         </div>
-        <form className="my-10 w-11/12">
+        <div className="my-10 w-11/12">
           <div className="">
             <p className="text-sm font-semibold mb-2 text-[#4D4D4E]">
               Parent/ Guardian name
@@ -68,17 +81,10 @@ const ApplicantContact = () => {
               size="small"
               name="parentName"
               value={formData.parentName}
-              onChange={handleInputChange}
+              onChange={(e)=>{ handleInputChange('parentName', e.target.value); }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -94,17 +100,10 @@ const ApplicantContact = () => {
               size="small"
               name="address"
               value={formData.address}
-              onChange={handleInputChange}
+              onChange={(e)=>{ handleInputChange('address', e.target.value); }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -118,17 +117,10 @@ const ApplicantContact = () => {
               size="small"
               name="maritalStatus"
               value={formData.maritalStatus}
-              onChange={handleInputChange}
+              onChange={(e)=>{ handleInputChange('maritalStatus', e.target.value); }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -143,17 +135,10 @@ const ApplicantContact = () => {
               size="small"
               name="phoneNumber"
               value={formData.phoneNumber}
-              onChange={handleInputChange}
+              onChange={(e)=>{ handleInputChange('phoneNumber', e.target.value); }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -169,17 +154,10 @@ const ApplicantContact = () => {
               size="small"
               name="email"
               value={formData.email}
-              onChange={handleInputChange}
+              onChange={(e)=>{ handleInputChange('email', e.target.value); }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -191,21 +169,14 @@ const ApplicantContact = () => {
             {/* <input className='border px-2 text-xs h-14 my-1 shadow-md rounded p-[12px] w-11/12' type='name' placeholder='State of Origin' /> */}
             <TextField
               className="w-full bg-white rounded-md p-[12px] placeholder:text-base shadow-2xl outline-none"
-              placeholder="State of Origin"
+              placeholder="Nationality"
               size="small"
-              name="stateOfOrigin"
-              value={formData.stateOfOrigin}
-              onChange={handleInputChange}
+              name="nationality"
+              value={formData.nationality}
+              onChange={(e)=>{ handleInputChange('nationality', e.target.value); }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -217,15 +188,13 @@ const ApplicantContact = () => {
                 </button>
               </div>
             </Link>
-            <Link to="/get-started/applicantacademiainfo">
-              <div className="">
-                <button className="border hover:bg-white hover:text-[#3D5EE1] bg-[#3D5EE1] text-white rounded-md h-10 w-36 cursor-pointer my-2">
-                  Continue
-                </button>
-              </div>
-            </Link>
+            <div className="">
+              <button onClick={()=>{ handleContinue(); }} className="border hover:bg-white hover:text-[#3D5EE1] bg-[#3D5EE1] text-white rounded-md h-10 w-36 cursor-pointer my-2">
+                Continue
+              </button>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

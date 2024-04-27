@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import Axios for making HTTP requests
 import { ApplicantImg } from "../../../assets";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
+import LoadingSpinner from './../../../components/Spinner/Spinner';
 
 
 const ApplicantAcademiaInfo = () => {
@@ -41,34 +42,50 @@ const ApplicantAcademiaInfo = () => {
 
   });
 
+  const [enabled, setEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState('');
   const [emailVerificationModalOpen, setEmailVerificationModalOpen] = useState(false); // State for modal visibility
   const [backendResponse, setBackendResponse] = useState(null); // State to store backend response
 
+  useEffect(() => {
+    const storedData = localStorage.getItem('schoolbaseapplicantdata');
+    if (storedData) {
+      setFormData(JSON.parse(storedData));
+      console.log(JSON.parse(storedData));
+    }
+  }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(formData);
+  const handleInputChange = (key, value) => {
+    let arr  = value.split(',')
+    let data = {...formData};
+    data[key] = arr;
+    setFormData(data);
   };
 
 
   //function to handle submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    localStorage.setItem('schoolbaseapplicantdata', JSON.stringify(formData));
+    setLoading(true);
     try {
       // Submit form data to backend
-      const response = await axios.post('https://tech4dev-project.onrender.com/students/upload', formData);
-      console.log('Response from backend:', response.data);
-      console.log('Signup successful:', response.data);
+      const response = await axios.post('https://tech4dev-project.onrender.com/students/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      alert('Response from backend:', response.data);
       // Store backend response in state
       setBackendResponse(response.data);
       // Show email verification modal on successful form submission
       setEmailVerificationModalOpen(true);
-
+      setLoading(false);
     } catch (error) {
       console.error('Error:', error);
-      setError('Error signing up. Please try again.');
+      alert('Error signing up. Please try again.');
+      setLoading(false);
     }
   };
   //const handleSubmit = async (e) => {
@@ -84,11 +101,13 @@ const ApplicantAcademiaInfo = () => {
   //}
 
 
-
-
-
   return (
-    <div className="font-manrope bg-blueBg">
+    <div className="font-manrope bg-blueBg relative">
+      {/* EmailVerification modal will only show when modalOpen is true */}
+      {emailVerificationModalOpen && 
+        <EmailVerification isOpen={emailVerificationModalOpen} onClose={() => setEmailVerificationModalOpen(false)} />
+      }
+
       <div className="text-center text-xl border-b-4 font-extrabold py-5">
         <h1 className="">ACADEMIA INFORMATION</h1>
       </div>
@@ -102,7 +121,7 @@ const ApplicantAcademiaInfo = () => {
             alt="Applicant's image"
           />
         </div>
-        <form className="my-10 w-11/12" onSubmit={handleSubmit}>
+        <div className="my-10 w-11/12">
           <div className="">
             <p className="text-xs font-semibold mb-2 text-[#4D4D4E]">
               List of extracurricular (e.g; clubs, sports)
@@ -114,17 +133,10 @@ const ApplicantAcademiaInfo = () => {
               size="small"
               name="extracurricular"
               value={formData.extracurricular}
-              onChange={handleInputChange}
+              onChange={(e)=>{ handleInputChange('extracurricular', e.target.value); }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -140,17 +152,10 @@ const ApplicantAcademiaInfo = () => {
               size="small"
               name="interests"
               value={formData.interests}
-              onChange={handleInputChange}
+              onChange={(e)=>{ handleInputChange('interests', e.target.value); }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -166,17 +171,10 @@ const ApplicantAcademiaInfo = () => {
               size="small"
               name="skills"
               value={formData.skills}
-              onChange={handleInputChange}
+              onChange={(e)=>{ handleInputChange('skills', e.target.value); }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -191,17 +189,10 @@ const ApplicantAcademiaInfo = () => {
               size="small"
               name="previousSchools"
               value={formData.previousSchools}
-              onChange={handleInputChange}
+              onChange={(e)=>{ handleInputChange('previousSchools', e.target.value); }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -222,17 +213,10 @@ const ApplicantAcademiaInfo = () => {
               size="small"
               name="additionalDocuments"
               value={formData.additionalDocuments}
-              onChange={handleInputChange}
+              onChange={()=>{ /*handleInputChange*/ }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -248,17 +232,10 @@ const ApplicantAcademiaInfo = () => {
               size="small"
               name="recommendationLetter"
               value={formData.recommendationLetter}
-              onChange={handleInputChange}
+              onChange={()=>{ /*handleInputChange*/ }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
@@ -274,27 +251,16 @@ const ApplicantAcademiaInfo = () => {
               size="small"
               name="signature"
               value={formData.signature}
-              onChange={handleInputChange}
+              onChange={()=>{ /*handleInputChange*/ }}
               sx={{
                 "& fieldset": { border: "none" },
               }}
-            //   value={firstname}
-            //   onChange={(e) => setFirstName(e.target.value)}
-            // onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            // value={formik.values.firstName}
-            //   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            //   helperText={formik.touched.firstName && formik.errors.firstName}
             //   required
             />
           </div>
           <div className="mt-2">
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox size="small" />}
-                label="I confirm that the information given on this form is correct"
-              />{" "}
-            </FormGroup>
+            <input className='mr-2' type="checkbox" onChange={(e)=>{ setEnabled(e.target.checked); }}/>
+            I confirm that the information given on this form is correct
           </div>
           <div className="flex justify-between">
             <Link to="/get-started/applicantcontact">
@@ -304,22 +270,23 @@ const ApplicantAcademiaInfo = () => {
                 </button>
               </div>
             </Link>
-            <Link>
-              <div className="">
-                <button type="submit" className="border hover:bg-blue-300 hover:text-[#3D5EE1] bg-[#3D5EE1] text-white rounded-md h-10 w-36 cursor-pointer my-2">
-                  Submit
-                </button>
-              </div>
-            </Link>
+            <div className="">
+              <button onClick={()=>{ localStorage.setItem('schoolbaseapplicantdata', JSON.stringify(formData)); setEmailVerificationModalOpen(true);/*handleSubmit();*/ }} style={{backgroundColor:enabled?'#1d4ed8':'lightgrey', color:enabled?'white':'darkgrey'}} className="flex items-center justify-center border hover:bg-blue-300 hover:text-[#3D5EE1] bg-[#3D5EE1] text-white rounded-md h-10 w-36 cursor-pointer my-2">
+                {
+                  !loading ?
+                    'Submit'
+                  : <LoadingSpinner
+                      loading={loading}
+                      size={"20px"}
+                      borderColor={"white"}
+                      borderTopColor={"transparent"}
+                    />
+                }
+              </button>
+            </div>
           </div>
-        </form>
+        </div>
       </div >
-
-      {/* EmailVerification modal will only show when modalOpen is true */}
-      {emailVerificationModalOpen && (
-        console.log('Email verification modal open:', emailVerificationModalOpen),
-        <EmailVerification isOpen={emailVerificationModalOpen} onClose={() => setEmailVerificationModalOpen(false)} />
-      )}
 
       {/* Display backend response */}
       {backendResponse && (
